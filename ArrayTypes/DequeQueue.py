@@ -15,3 +15,6 @@ class DequeQueue:
 
     def is_empty(self):
         return self.__deque.is_empty()
+
+    def __str__(self):
+        return self.__deque.__str__()
