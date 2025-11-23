@@ -51,7 +51,7 @@ class ArrayStack:
                         raise ValueError("Inválido - Tag de fechamento sem abertura.")
 
                     if self.pop()[1:1] != self.remove_bar(tag)[1:1]:
-                        raise ValueError("Inválido - Aninhamento Incorreto")
+                        raise ValueError("Inválido - Aninhamento  ")
 
             itr += 1
 
