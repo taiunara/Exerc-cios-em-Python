@@ -21,6 +21,9 @@ class ArrayStack:
             raise EmptyStack("A pilha está vazia!")
         return self.__stack[-1]
 
+    def length(self):
+        return len(self.__stack)
+
     def __str__(self):
         return self.__stack.__str__()
 
@@ -28,34 +31,98 @@ class ArrayStack:
         self.__stack = []
 
     def remove_bar(self, tag):
-        tag_formatada = ""
+        no_bar = ''
         for i in tag:
             if i != '/':
-                tag_formatada += i
-        return tag_formatada
+                no_bar += i
+        return no_bar
 
     def is_matched_html(self, html):
-        itr = 0
+        index = 0
+        tamanho = len(html)
 
-        while itr < len(html):
-            if html[itr] == '<':
-                comeco = itr
-                while itr < len(html) and html[itr] != '>':
-                    itr += 1
-                tag = html[comeco:itr + 1]
+        while index < tamanho:
 
-                if tag[1] != '/':
-                    self.push(tag)
+            if html[index] == '<':
+                pos_fim_tag = index + 1
+                while pos_fim_tag < tamanho and html[pos_fim_tag] != '>':
+                    pos_fim_tag = index + 1
+
+                if pos_fim_tag == tamanho:
+                    return False
+
+                conteudo_tag = html[index+1:pos_fim_tag]
+
+                if conteudo_tag > tamanho and conteudo_tag[0] != '/':
+                    self.push(conteudo_tag)
                 else:
                     if self.is_empty():
-                        raise ValueError("Inválido - Tag de fechamento sem abertura.")
+                        return False
 
-                    if self.pop()[1:1] != self.remove_bar(tag)[1:1]:
-                        raise ValueError("Inválido - Aninhamento  ")
+                conteudo_no_bar = self.remove_bar(conteudo_tag)
 
-            itr += 1
+                if self.pop() != conteudo_no_bar:
+                    return False
 
-            if not self.is_empty():
-                raise ValueError(f"Inválido - As tags {self.__stack} não foram fechadas.")
+                index = pos_fim_tag + 1
 
-            print("Válido")
+            else:
+
+                index += 1
+
+        return self.is_empty()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # def remove_bar(self, tag):
+    #     tag_formatada = ""
+    #     for i in tag:
+    #         if i != '/':
+    #             tag_formatada += i
+    #     return tag_formatada
+    #
+    # def is_matched_html(self, html):
+    #     index = 0
+    #     tamanho = len(html)
+    #
+    #     while index < tamanho:
+    #         if html[index] == "<":
+    #             posicao_fecha_tag = index + 1
+    #
+    #             while posicao_fecha_tag < tamanho and html[posicao_fecha_tag] != ">":
+    #                 posicao_fecha_tag += 1
+    #
+    #             if posicao_fecha_tag == tamanho:
+    #                 return False
+    #
+    #             conteudo_tag = html[index + 1: posicao_fecha_tag]
+    #
+    #             if len(conteudo_tag) > 0 and conteudo_tag[0] != "/":
+    #                 self.push(conteudo_tag)
+    #             else:
+    #                 if self.is_empty():
+    #                     return False
+    #
+    #                 conteudo_sem_barra = self.remove_bar(conteudo_tag)
+    #
+    #                 if self.pop() != conteudo_sem_barra:
+    #                     return False
+    #
+    #             index = posicao_fecha_tag + 1
+    #
+    #         else:
+    #             index += 1
+    #
+    #     return self.is_empty()
