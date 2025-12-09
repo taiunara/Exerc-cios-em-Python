@@ -21,9 +21,53 @@ class ArrayStack:
             raise EmptyStack("A pilha está vazia!")
         return self.__stack[-1]
 
+    def length(self):
+        return len(self.__stack)
+
     def __str__(self):
         return self.__stack.__str__()
 
     def remove_all(self):
         self.__stack = []
 
+    def remove_bar(self, tag):
+        no_bar = ''
+        for i in tag:
+            if i != '/':
+                no_bar += i
+        return no_bar
+
+    def is_matched_html(self, html):
+        index = 0
+        tamanho = len(html)
+
+        while index < tamanho:
+
+            if html[index] == '<':
+                pos_fim_tag = index + 1
+                while pos_fim_tag < tamanho and html[pos_fim_tag] != '>':
+                    pos_fim_tag = index + 1
+
+                if pos_fim_tag == tamanho:
+                    return False
+
+                conteudo_tag = html[index+1:pos_fim_tag]
+
+                if conteudo_tag > tamanho and conteudo_tag[0] != '/':
+                    self.push(conteudo_tag)
+                else:
+                    if self.is_empty():
+                        return False
+
+                conteudo_no_bar = self.remove_bar(conteudo_tag)
+
+                if self.pop() != conteudo_no_bar:
+                    return False
+
+                index = pos_fim_tag + 1
+
+            else:
+
+                index += 1
+
+        return self.is_empty()

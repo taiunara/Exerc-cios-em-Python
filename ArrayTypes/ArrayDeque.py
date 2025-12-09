@@ -3,7 +3,7 @@ class ArrayDeque:
         self.__deque = []
 
     def add_first(self, elem):
-            self.__deque.insert(0, elem)
+        self.__deque.insert(0, elem)
 
     def add_last(self, elem):
         self.__deque.append(elem)
@@ -25,3 +25,13 @@ class ArrayDeque:
 
     def __str__(self):
         return self.__deque.__str__()
+
+    def first(self):
+        if self.is_empty():
+            print(f"A lista está vazia!")
+        return self.__deque[0]
+
+    def rotate(self):
+       if not self.is_empty():
+           primeiro = self.remove_first()
+           self.add_last(primeiro)
